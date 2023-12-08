@@ -7,7 +7,7 @@ import com.restaurant.dtos.UserDto;
 import com.restaurant.entities.User;
 import com.restaurant.repositories.UserRepository;
 import com.restaurant.services.auth.AuthService;
-import com.restaurant.services.auth.jwt.UserDetailsServiceImpl;
+import com.restaurant.services.jwt.UserDetailsServiceImpl;
 import com.restaurant.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class AuthController {
             return null;
         }
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails);
         Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         if(optionalUser.isPresent()){
